@@ -26,7 +26,7 @@ export class WebsocketService {
     });
     this.socket.on('disconnect', () => {
       console.log('Desconectado del servidor');
-      this.socketStatus = true;
+      this.socketStatus = false;
     });
   }
 }
