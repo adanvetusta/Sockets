@@ -5,3 +5,12 @@ export const desconectar = (cliente: Socket) => {
         console.log('Cliente desconectado')
     });
 }
+
+
+//Escuchar mensajes
+export const mensaje = (cliente: Socket) => {
+    // Este es el manejador del evento
+    cliente.on('mensaje', (payload) => {
+        console.log('Mensaje recibido', payload);
+    });
+}
