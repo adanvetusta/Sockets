@@ -19,6 +19,10 @@ export class WebsocketService {
     this.checkStatus();
   }
 
+  getUsuario() {
+    return this.usuario;
+  }
+
   /**
    * this.socket.on.... Son observables
    */
