@@ -1,6 +1,6 @@
 import { Router, Request, Response} from 'express';
 import Server from '../clases/server';
-import { Socket } from 'ngx-socket-io';
+import { usuariosConectados } from '../sockets/socket';
 export const router = Router();
 
 
@@ -56,6 +56,9 @@ router.post('/mensajes/:id', (req: Request, res: Response) => {
 });
 
 
+/**
+ * Obtener usuarios con sus ids
+ */
 router.get('/usuarios', (req: Request, res: Response) => {
     const server = Server.instance;
 
@@ -72,6 +75,17 @@ router.get('/usuarios', (req: Request, res: Response) => {
             clientes
         })
     })
+});
+
+
+/**
+ * Obtener usuarios y sus nombres
+ */
+router.get('/usuarios/detalle', (req: Request, res: Response) => {
+    res.json({
+        ok: true,
+        clientes: usuariosConectados.getLista()
+    });
 });
 
 export default router;
