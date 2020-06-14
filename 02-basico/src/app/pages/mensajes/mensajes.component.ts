@@ -13,4 +13,7 @@ export class MensajesComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  logout() {
+    this.wsService.logoutWS();
+  }
 }
