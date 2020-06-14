@@ -5,13 +5,14 @@ import { Usuario } from '../clases/usuario';
 
 export const usuariosConectados = new UsuariosLista();
 
-export const desconectar = (cliente: Socket) => {
+export const desconectar = (cliente: Socket, io: SocketIO.Server) => {
     cliente.on('disconnect', () => {
         usuariosConectados.borrarUsuarios(cliente.id);
+        io.emit('usuarios-activos', usuariosConectados.getLista());
     });
 }
 
-export const conectarCliente = (cliente: Socket) => {
+export const conectarCliente = (cliente: Socket, io: SocketIO.Server) => {
     const usuario = new Usuario(cliente.id);
     usuariosConectados.agregar(usuario);
 }
@@ -32,9 +33,19 @@ export const configurarUsuario = (cliente: Socket, io: socketIO.Server) => {
         
         usuariosConectados.actualizarNombre(cliente.id, payload.nombre);
 
+        io.emit('usuarios-activos', usuariosConectados.getLista());
+
         callback({
             ok: true,
             mensaje: `Usuario ${payload.nombre} configurado`
         })
+    });
+}
+
+// Obtener usuarios
+export const obtenerUsuarios = (cliente: Socket, io: socketIO.Server) => {
+    cliente.on('obtener-usuarios', () => {
+        // Con el to, emitimos a un usuario específico
+        io.to(cliente.id).emit('usuarios-activos', usuariosConectados.getLista());
     });
 }
