@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { ChartsModule } from 'ng2-charts';
+import { HttpClientModule } from '@angular/common/http';
+
 
 // Sockets
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
@@ -20,7 +22,8 @@ const config: SocketIoConfig = { url: environment.wsUrl, options: {} };
   imports: [
     ChartsModule,
     SocketIoModule.forRoot(config),
-    BrowserModule
+    BrowserModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
