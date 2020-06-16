@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as mapboxgl from 'mapbox-gl';
 import { Lugar } from 'src/app/interfaces/interfaces';
+import { generarColorHexadecimal, idUnico } from 'src/app/utils/utils';
 
 @Component({
   selector: 'app-mapa',
@@ -64,12 +65,31 @@ export class MapaComponent implements OnInit {
     }).setHTML(html);
 
     const marker = new mapboxgl.Marker({
-      draggable: false,
+      draggable: true,
       color: marcador.color,
       style: 'mapbox://styles/mapbox/streets-v11'
     })
     .setPopup(customPoup)
     .setLngLat([marcador.lng, marcador.lat])
     .addTo(this.mapa);
+
+
+    marker.on('drag', () => {
+      const lngLat = marker.getLngLat();
+      console.log(lngLat);
+
+      // TO DO: crear evento para emitir las coordenadas de este marcador
+    });
+  }
+
+  crearMarcador() {
+    const customMarker: Lugar = {
+      id: idUnico(),
+      lng: -75.75512993582937,
+      lat: 45.349977429009954,
+      nombre: 'Sin nombre',
+      color: generarColorHexadecimal()
+    };
+    this.agregarMarcador(customMarker);
   }
 }
