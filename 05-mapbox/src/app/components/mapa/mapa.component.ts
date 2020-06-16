@@ -54,6 +54,14 @@ export class MapaComponent implements OnInit {
     }
   }
 
+  escucharSockets() {
+    //marcador-nuevo
+
+    //marcador-mover
+
+    //marcador-borrar
+  }
+
   agregarMarcador(marcador: Lugar) {
 
     const h2 = document.createElement('h2');
