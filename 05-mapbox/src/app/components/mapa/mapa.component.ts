@@ -61,7 +61,9 @@ export class MapaComponent implements OnInit {
     });
 
     //marcador-mover
-
+    this.wsService.listen('marcador-mover').subscribe((marcador: Lugar) => {
+      this.markersMapbox[marcador.id].setLngLat([marcador.lng, marcador.lat]);
+    });
   }
 
 
@@ -99,7 +101,11 @@ export class MapaComponent implements OnInit {
 
     marker.on('drag', () => {
       const lngLat = marker.getLngLat();
-      // TO DO: crear evento para emitir las coordenadas de este marcador
+      const nuevoMarcador = {
+        id: marcador.id,
+        ...lngLat
+      };
+      this.wsService.emit('marcador-mover', nuevoMarcador);
     });
 
     btnBorrar.addEventListener('click', () => {
