@@ -3,6 +3,7 @@ import * as mapboxgl from 'mapbox-gl';
 import { Lugar, RespMarcadores } from 'src/app/interfaces/interfaces';
 import { generarColorHexadecimal, idUnico } from 'src/app/utils/utils';
 import { HttpClient } from '@angular/common/http';
+import { WebsocketService } from '../../services/websocket.service';
 
 
 
@@ -20,14 +21,16 @@ export class MapaComponent implements OnInit {
 
   lugares: RespMarcadores = {};
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private wsService: WebsocketService) { }
 
   ngOnInit(): void {
 
     this.http.get('http://localhost:5000/mapa').subscribe((lugares: RespMarcadores) => {
+      console.log('Lugares', lugares);
       this.lugares = lugares;
       this.crearMapa();
     });
+    this.escucharSockets();
   }
 
   crearMapa() {
@@ -46,12 +49,21 @@ export class MapaComponent implements OnInit {
 
   escucharSockets() {
     //marcador-nuevo
-
+    this.wsService.listen('marcador-nuevo').subscribe((marcador: Lugar) => {
+      console.log('Socket', marcador);
+      this.agregarMarcador(marcador);
+    });
+  
     //marcador-mover
 
     //marcador-borrar
   }
 
+
+  /**
+   * Recibe un marcador y lo coloca en el mapa
+   * @param marcador
+   */
   agregarMarcador(marcador: Lugar) {
 
     const h2 = document.createElement('h2');
@@ -82,8 +94,6 @@ export class MapaComponent implements OnInit {
 
     marker.on('drag', () => {
       const lngLat = marker.getLngLat();
-      console.log(lngLat);
-
       // TO DO: crear evento para emitir las coordenadas de este marcador
     });
 
@@ -94,6 +104,9 @@ export class MapaComponent implements OnInit {
     });
   }
 
+  /**
+   * Creación de un marcador nuevo
+   */
   crearMarcador() {
     const customMarker: Lugar = {
       id: idUnico(),
@@ -103,5 +116,8 @@ export class MapaComponent implements OnInit {
       color: generarColorHexadecimal()
     };
     this.agregarMarcador(customMarker);
+
+    // emitir marcador nuevo
+    this.wsService.emit('marcador-nuevo', customMarker);
   }
 }

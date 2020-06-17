@@ -1,6 +1,6 @@
 import { Router, Request, Response} from 'express';
 import Server from '../clases/server';
-import { usuariosConectados } from '../sockets/socket';
+import { usuariosConectados, mapa } from '../sockets/socket';
 import { GraficaData } from '../clases/grafica';
 import { Mapa } from '../clases/mapa';
 
@@ -33,7 +33,6 @@ router.post('/grafica', (req: Request, res: Response) => {
 /**
  =========================================== MAPA ===========================================
  */
-const mapa = new Mapa();
 
 router.get('/mapa', (req: Request, res: Response) => {
     res.json(mapa.getMarcadores());

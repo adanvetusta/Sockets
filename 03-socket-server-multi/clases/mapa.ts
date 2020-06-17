@@ -1,4 +1,4 @@
-import { Marcador } from "./marcador";
+import { Marcador } from './marcador';
 
 export class Mapa {
     
@@ -30,6 +30,11 @@ export class Mapa {
 
     getMarcadores() {
         return this.marcadores;
+    }
+
+
+    agregarMarcador(marcador: Marcador) {
+        this.marcadores[marcador.id] = marcador;
     }
 
     borrarMarcador(id: string) {
