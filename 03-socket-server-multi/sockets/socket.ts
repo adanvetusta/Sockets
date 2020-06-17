@@ -14,6 +14,10 @@ export const mapaSockets = (cliente: Socket, io: SocketIO.Server) => {
         mapa.agregarMarcador(marcador);
         // Broadcast --> Se excluye a sí mismo
         cliente.broadcast.emit('marcador-nuevo', marcador);
+    });
+    cliente.on('marcador-borrar', (id: string) => {
+        mapa.borrarMarcador(id);
+        cliente.broadcast.emit('marcador-borrar', id);
     })
 }
 

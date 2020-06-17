@@ -14,12 +14,11 @@ import { WebsocketService } from '../../services/websocket.service';
 })
 export class MapaComponent implements OnInit {
 
-
-
-
   mapa: mapboxgl.Map;
 
   lugares: RespMarcadores = {};
+
+  markersMapbox: { [id: string]: mapboxgl.Marker } = {};
 
   constructor(private http: HttpClient, private wsService: WebsocketService) { }
 
@@ -53,10 +52,16 @@ export class MapaComponent implements OnInit {
       console.log('Socket', marcador);
       this.agregarMarcador(marcador);
     });
-  
-    //marcador-mover
 
     //marcador-borrar
+    this.wsService.listen('marcador-borrar').subscribe((id: string) => {
+      this.markersMapbox[id].remove();
+      // Eliminamos referencia en memoria
+      delete this.markersMapbox[id];
+    });
+
+    //marcador-mover
+
   }
 
 
@@ -80,7 +85,7 @@ export class MapaComponent implements OnInit {
     const customPoup = new mapboxgl.Popup({
       offset: 25,
       closeOnClick: false
-    }).setDOMContent(div); 
+    }).setDOMContent(div);
 
     const marker = new mapboxgl.Marker({
       draggable: true,
@@ -99,9 +104,11 @@ export class MapaComponent implements OnInit {
 
     btnBorrar.addEventListener('click', () => {
       marker.remove();
-
-      // TO DO: eliminar el marcador mediante sockets
+      this.wsService.emit('marcador-borrar', marcador.id);
     });
+
+    this.markersMapbox[marcador.id] = marker;
+    console.log('markersMapbox', this.markersMapbox);
   }
 
   /**
