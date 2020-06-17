@@ -5,3 +5,7 @@ export interface Lugar {
     lat: number;
     color: string;
 }
+
+export interface RespMarcadores {
+    [key: string]: Lugar;
+}

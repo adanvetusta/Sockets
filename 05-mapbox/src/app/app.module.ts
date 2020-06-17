@@ -7,6 +7,7 @@ import { MapaComponent } from './components/mapa/mapa.component';
 // Sockets
 import { SocketIoModule } from 'ngx-socket-io';
 import { environment } from 'src/environments/environment';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { environment } from 'src/environments/environment';
   ],
   imports: [
     BrowserModule,
-    SocketIoModule.forRoot(environment.socketConfig)
+    SocketIoModule.forRoot(environment.socketConfig),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
