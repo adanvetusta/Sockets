@@ -1,6 +1,6 @@
 
 # 01-server y 03-socket-server-multi
-Descargar dependencias
+Descargar dependencias:
 ```
 npm install
 ```
@@ -11,7 +11,16 @@ Generar código JS en la carpeta /dist:
 tsc -w
 ```
 
-Levantar el servidor 
+Levantar el servidor:
 ```
 nodemon /dist
+```
+# 02-basico; 04-grafica; 05-mapbox
+Descargar dependencias:
+```
+npm install
+```
+Levantar el servidor:
+```
+ng serve -o
 ```
